@@ -1,0 +1,7 @@
+{
+    "i18n-ally.localesPaths": [
+        "resources/lang",
+        "public/backend/summernote/lang",
+        "public/frontend/js/select2/js/i18n"
+    ]
+}
