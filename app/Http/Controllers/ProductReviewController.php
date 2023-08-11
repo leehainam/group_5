@@ -38,7 +38,36 @@ class ProductReviewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store(Request $request)
+    {
+        $this->validate($request,[
+            'rate'=>'required|numeric|min:1'
+        ]);
+        $product_info=Product::getProductBySlug($request->slug);
+        //  return $product_info;
+        // return $request->all();
+        $data=$request->all();
+        $data['product_id']=$product_info->id;
+        $data['user_id']=$request->user()->id;
+        $data['status']='active';
+        // dd($data);
+        $status=ProductReview::create($data);
 
+        $user=User::where('role','admin')->get();
+        $details=[
+            'title'=>'New Product Rating!',
+            'actionURL'=>route('product-detail',$product_info->slug),
+            'fas'=>'fa-star'
+        ];
+        Notification::send($user,new StatusNotification($details));
+        if($status){
+            request()->session()->flash('success','Thank you for your feedback');
+        }
+        else{
+            request()->session()->flash('error','Something went wrong! Please try again!!');
+        }
+        return redirect()->back();
+    }
 
     /**
      * Display the specified resource.
