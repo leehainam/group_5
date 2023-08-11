@@ -100,37 +100,7 @@ class ProductReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $review=ProductReview::find($id);
-        if($review){
-            // $product_info=Product::getProductBySlug($request->slug);
-            //  return $product_info;
-            // return $request->all();
-            $data=$request->all();
-            $status=$review->fill($data)->update();
 
-            // $user=User::where('role','admin')->get();
-            // return $user;
-            // $details=[
-            //     'title'=>'Update Product Rating!',
-            //     'actionURL'=>route('product-detail',$product_info->id),
-            //     'fas'=>'fa-star'
-            // ];
-            // Notification::send($user,new StatusNotification($details));
-            if($status){
-                request()->session()->flash('success','Review Successfully updated');
-            }
-            else{
-                request()->session()->flash('error','Something went wrong! Please try again!!');
-            }
-        }
-        else{
-            request()->session()->flash('error','Review not found!!');
-        }
-
-        return redirect()->route('review.index');
-    }
 
     /**
      * Remove the specified resource from storage.
